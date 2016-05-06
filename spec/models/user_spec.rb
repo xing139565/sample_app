@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   
-  before { @user = User.new(name:"Example User",email:"user@example.com",
-                            password:"foobar",
-                            password_confirmation:"foobar"
-                                                      ) }
+  before do
+    @user = User.new(name: "Example User", email: "user@example.com",
+                     password: "foobar", password_confirmation: "foobar")
+  end
 
   # 模型测试
   
@@ -26,6 +26,9 @@ RSpec.describe User, type: :model do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:authenticate) }
+
+  # 验证token
+  it { should respond_to(:remember_token) }
 
 
   # 验证name属性的失败测试
@@ -115,6 +118,11 @@ RSpec.describe User, type: :model do
       it { should_not eq user_for_invalid_password }
       # specify { expect(user_for_invalid_password).to be_false }
     end
+  end
+
+  describe "remember token" do
+    before { @user.save }
+    it { expect(@user.remember_token).not_to be_blank }
   end
 
 
